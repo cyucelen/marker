@@ -2,7 +2,7 @@
   <img height="300px" src="assets/logo.png">
 </p>
 <p align="center">
-	Marker is a Go library for marking patterns in strings with colors.
+       Marker is a Go library for marking string patterns with colors in terminal!
 </p>
 
 <p align="center">
