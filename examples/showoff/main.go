@@ -13,6 +13,8 @@ var redFg = color.New(color.FgRed)
 var blueFg = color.New(color.FgBlue)
 var blackFg = color.New(color.FgBlack)
 var greenFg = color.New(color.FgGreen)
+var yellowFg = color.New(color.FgYellow)
+var whiteFg = color.New(color.FgWhite)
 
 func main() {
 	rhyme := "I scream, you all scream, we all scream for ice cream."
@@ -22,22 +24,22 @@ func main() {
 	fmt.Println(allMarked)
 
 	rhymeMarkExample = "Mark All \"all\" and \"ice\":\t\t\t\t" + rhyme
-	allMarked = marker.Mark(rhymeMarkExample, marker.MatchAll("all"), magentaFg)
-	allIceMarked := marker.Mark(allMarked, marker.MatchAll("ice"), hiMagentaFg.Add(color.BgBlack))
+	allMarked = marker.Mark(rhymeMarkExample, marker.MatchAll("all"), greenFg)
+	allIceMarked := marker.Mark(allMarked, marker.MatchAll("ice"), hiMagentaFg.Add(color.BgWhite))
 	fmt.Println(allIceMarked)
 
 	r, _ := regexp.Compile("([a-z]?cream)")
-	markedWithRegexp := marker.Mark(rhyme, marker.MatchRegexp(r), blackFg.Add(color.BgGreen))
-	regexpExampleHeader := fmt.Sprintf("Mark Regexp \"%s\":\t\t\t\t", blackFg.Add(color.BgGreen).Sprint("([a-z]?cream)"))
+	markedWithRegexp := marker.Mark(rhyme, marker.MatchRegexp(r), whiteFg.Add(color.BgHiBlue))
+	regexpExampleHeader := fmt.Sprintf("Mark Regexp \"%s\":\t\t\t\t", whiteFg.Add(color.BgHiBlue).Sprint("([a-z]?cream)"))
 	fmt.Println(regexpExampleHeader + markedWithRegexp)
 
 	b := &marker.MarkBuilder{}
 	markedWithBuilder := b.SetString(rhyme).
 		Mark(marker.MatchN("for ice", 1), redFg).
 		Mark(marker.MatchAll("all"), magentaFg).
-		Mark(marker.MatchRegexp(r), blackFg.Add(color.BgHiMagenta)).
+		Mark(marker.MatchRegexp(r), redFg.Add(color.BgHiWhite)).
 		Build()
 	builderExampleHeader := fmt.Sprintf("Mark \"%s\", \"%s\", \"%s\" (w/ builder):\t",
-		redFg.Sprint("for ice"), magentaFg.Sprint("all"), blackFg.Add(color.BgHiMagenta).Sprint("([a-z]?cream)"))
+		color.New(color.FgRed).Sprint("for ice"), magentaFg.Sprint("all"), redFg.Add(color.BgHiWhite).Sprint("([a-z]?cream)"))
 	fmt.Println(builderExampleHeader + markedWithBuilder)
 }
