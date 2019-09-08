@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="300px" src="assets/logo.png">
+  <img height="200px" src="assets/logo.png">
 </p>
 <p align="center">
        <b>Marker is the easiest way to match and mark strings for colorful terminal outputs.</b>
@@ -26,7 +26,7 @@
 # marker
 
 <p align="center">
-  <img height="100px" src="assets/showoff.jpg">
+  <img src="assets/showoff.jpg">
 </p>
 
 Marker is built for easily match and mark strings for colorful terminal outputs. You can match your strings with built-in matchers or easily implement a custom matcher for your usecase. Marker uses [fatih/color](https://github.com/fatih/color) 
