@@ -37,3 +37,10 @@ func Test_MatchRegexp(t *testing.T) {
 
 	assert.Equal(t, actualMatch, expectedMatch)
 }
+
+func Test_MatchDaysOfWeek(t *testing.T) {
+	str := "Today is Tuesday or tuesday not tUeSday"
+	actualMatch := MatchDaysofWeek()(str)
+	expectedMatch := Match{Template: "Today is %s or %s not tUeSday", Patterns: []string{"tuesday", "Tuesday"}}
+	assert.Equal(t, actualMatch, expectedMatch)
+}

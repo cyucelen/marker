@@ -45,6 +45,25 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	}
 }
 
+// MatchDaysofWeek returns a MatcherFunc that matches days of the week in given string
+func MatchDaysofWeek() MatcherFunc {
+	return func(str string) Match {
+		var days [14]string = [14]string {"monday", "Monday", "tuesday", "Tuesday", "wednesday", "Wednesday", "thursday", "Thursday", "friday", "Friday", "saturday", "Saturday", "sunday", "Sunday"}
+		var pattern []string
+		newString := str
+		for _, v := range days {
+			if strings.Contains(newString, v) {
+				newString = strings.ReplaceAll(newString, v, "%s" )
+				pattern = append(pattern, v)
+			}
+		}
+		return Match{
+			Template: newString,
+			Patterns: pattern,
+		}
+	}
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
