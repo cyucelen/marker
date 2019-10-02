@@ -2,6 +2,7 @@ package marker
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -49,17 +50,30 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 func MatchDaysofWeek() MatcherFunc {
 	return func(str string) Match {
 		var days [14]string = [14]string {"monday", "Monday", "tuesday", "Tuesday", "wednesday", "Wednesday", "thursday", "Thursday", "friday", "Friday", "saturday", "Saturday", "sunday", "Sunday"}
-		var pattern []string
+		pattern := make(map[int]string)
 		newString := str
 		for _, v := range days {
 			if strings.Contains(newString, v) {
-				newString = strings.ReplaceAll(newString, v, "%s" )
-				pattern = append(pattern, v)
+				count := strings.Count(newString, v)
+				for i:=1; i<=count; i++ {
+					loc := strings.Index(newString, v)
+					newString = strings.Replace(newString, v, "%s",1)
+					pattern[loc] = v
+				}
 			}
+		}
+		var keys []int
+    		for k,_ := range pattern {
+		        keys = append(keys, k)
+		}
+    		sort.Ints(keys)
+		var pat []string
+		for _, k := range keys{
+			pat = append(pat, pattern[k])
 		}
 		return Match{
 			Template: newString,
-			Patterns: pattern,
+			Patterns: pat,
 		}
 	}
 }
