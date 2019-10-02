@@ -28,3 +28,22 @@ func Test_Builder(t *testing.T) {
 
 	assert.Equal(t, expectedString, actualString)
 }
+
+func Benchmark_Builder(b *testing.B) {
+	blueFg := color.New(color.FgBlue)
+	blueFg.EnableColor()
+
+	redFg := color.New(color.FgRed)
+	redFg.EnableColor()
+
+	b.ReportAllocs()
+	builder := MarkBuilder{}
+
+	skydomeMatcher := MatchAll("Skydome")
+
+	for i := 0; i < b.N; i++ {
+		builder.SetString("Skydome is a data company.").
+			Mark(skydomeMatcher, blueFg).
+			Build()
+	}
+}
