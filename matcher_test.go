@@ -1,9 +1,10 @@
 package marker
 
 import (
-	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_MatchAll(t *testing.T) {
