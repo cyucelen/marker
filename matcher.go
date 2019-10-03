@@ -46,37 +46,34 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	}
 }
 
-// MatchDaysofWeek returns a MatcherFunc that matches days of the week in given string
-func MatchDaysofWeek() MatcherFunc {
+// MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string
+func MatchDaysOfWeek() MatcherFunc {
 	return func(str string) Match {
-		var days [14]string = [14]string {"monday", "Monday", "tuesday", "Tuesday", "wednesday", "Wednesday", "thursday", "Thursday", "friday", "Friday", "saturday", "Saturday", "sunday", "Sunday"}
-		pattern := make(map[int]string)
-		newString := str
-		for _, v := range days {
-			if strings.Contains(newString, v) {
-				count := strings.Count(newString, v)
-				for i:=1; i<=count; i++ {
-					loc := strings.Index(newString, v)
-					newString = strings.Replace(newString, v, "%s",1)
-					pattern[loc] = v
-				}
+		daysOfWeek := [14]string{"monday", "Monday", "tuesday", "Tuesday", "wednesday", "Wednesday", "thursday", "Thursday", "friday", "Friday", "saturday", "Saturday", "sunday", "Sunday"}
+		patternMatchIndexes := make(map[int]string)
+		for  _, day := range daysOfWeek {
+			for strings.Contains(str, day) {
+				matchIndex := strings.Index(str, day)
+				str = strings.Replace(str, day, "%s",1)
+				patternMatchIndexes[matchIndex] = day
 			}
 		}
-		var keys []int
-    		for k,_ := range pattern {
-		        keys = append(keys, k)
-		}
-    		sort.Ints(keys)
-		var pat []string
-		for _, k := range keys{
-			pat = append(pat, pattern[k])
-		}
-		return Match{
-			Template: newString,
-			Patterns: pat,
-		}
+ 	matchIndexes := make([]int, 0, len(patternMatchIndexes))
+    	for matchKey,_ := range patternMatchIndexes {
+	        matchIndexes = append(matchIndexes, matchKey)
+	}
+    	sort.Ints(matchIndexes)
+	pattern := make([]string, 0, len(patternMatchIndexes))
+	for _, index := range matchIndexes {
+		pattern = append(pattern, patternMatchIndexes[index])
+	}
+	return Match{
+		Template: str,
+		Patterns: pattern,
+	}
 	}
 }
+
 
 func min(a, b int) int {
 	if a < b {
