@@ -42,7 +42,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
 
 ## Matchers
 
-#### MathcAll
+#### MatchAll
 ```go
   aristotleQuote := "The more you know, the more you realize you don't know."
   emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
