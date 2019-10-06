@@ -53,10 +53,7 @@ func MatchSurrounded(charOne string, charTwo string) MatcherFunc {
 		quoteCharTwo := regexp.QuoteMeta(charTwo)
 		matchPattern := fmt.Sprintf("%s[^%s]*%s", quoteCharOne, quoteCharOne, quoteCharTwo)
 		r, _ := regexp.Compile(matchPattern)
-		return Match{
-			Template: r.ReplaceAllString(str, "%s"),
-			Patterns: r.FindAllString(str, -1),
-		}
+		return MatchRegexp(r)(str)
 	}
 }
 
