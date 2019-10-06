@@ -1,6 +1,7 @@
 package marker
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -43,6 +44,30 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 			Patterns: r.FindAllString(str, -1),
 		}
 	}
+}
+
+// MatchSurrounded takes in characters surrounding a given expected match and returns the match findings
+func MatchSurrounded(charOne string, charTwo string) MatcherFunc {
+	return func(str string) Match {
+		quoteCharOne := regexp.QuoteMeta(charOne)
+		quoteCharTwo := regexp.QuoteMeta(charTwo)
+		matchPattern := fmt.Sprintf("%s[^%s]*%s", quoteCharOne, quoteCharOne, quoteCharTwo)
+		r, _ := regexp.Compile(matchPattern)
+		return Match{
+			Template: r.ReplaceAllString(str, "%s"),
+			Patterns: r.FindAllString(str, -1),
+		}
+	}
+}
+
+// MatchBracketSurrounded is a helper utility for easy matching of bracket surrounded text
+func MatchBracketSurrounded() MatcherFunc {
+	return MatchSurrounded("[", "]")
+}
+
+// MatchParensSurrounded is a helper utility for easy matching text surrounded in parentheses
+func MatchParensSurrounded() MatcherFunc {
+	return MatchSurrounded("(", ")")
 }
 
 func min(a, b int) int {

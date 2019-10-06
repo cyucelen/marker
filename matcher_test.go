@@ -38,3 +38,64 @@ func Test_MatchRegexp(t *testing.T) {
 
 	assert.Equal(t, actualMatch, expectedMatch)
 }
+
+func Test_MatchSurrounded(t *testing.T) {
+	str := "[ERROR] This is a -debug- message -(and it's okay)- [INFO] --test--"
+
+	actualMatch := MatchSurrounded("-", "-")(str)
+
+	expectedMatch := Match{
+		Template: "[ERROR] This is a %s message %s [INFO] %stest%s",
+		Patterns: []string{"-debug-", "-(and it's okay)-", "--", "--"},
+	}
+
+	assert.Equal(t, actualMatch, expectedMatch)
+
+	str = "abcMULTIPLE CHARACTERSdef whoa"
+
+	actualMatch = MatchSurrounded("abc", "def")(str)
+
+	expectedMatch = Match{
+		Template: "%s whoa",
+		Patterns: []string{"abcMULTIPLE CHARACTERSdef"},
+	}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+
+	str = "[[DOUBLE CHARACTERS]]"
+
+	actualMatch = MatchSurrounded("[[", "]]")(str)
+
+	expectedMatch = Match{
+		Template: "%s",
+		Patterns: []string{"[[DOUBLE CHARACTERS]]"},
+	}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+}
+
+func Test_MatchBracketSurrounded(t *testing.T) {
+	str := "[ERROR] This is a -debug- message (and it's okay) [INFO] --test--"
+
+	actualMatch := MatchBracketSurrounded()(str)
+
+	expectedMatch := Match{
+		Template: "%s This is a -debug- message (and it's okay) %s --test--",
+		Patterns: []string{"[ERROR]", "[INFO]"},
+	}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+}
+
+func Test_MatchParensSurrounded(t *testing.T) {
+	str := "[ERROR] This is a -debug- message (and it's okay) [INFO] --test--"
+
+	actualMatch := MatchParensSurrounded()(str)
+
+	expectedMatch := Match{
+		Template: "[ERROR] This is a -debug- message %s [INFO] --test--",
+		Patterns: []string{"(and it's okay)"},
+	}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+}
