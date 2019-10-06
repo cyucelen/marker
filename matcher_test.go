@@ -12,7 +12,7 @@ func Test_MatchAll(t *testing.T) {
 	actualMatch := MatchAll("Skydome")(str)
 	expectedMatch := Match{Template: "%s is %s", Patterns: []string{"Skydome", "Skydome"}}
 
-	assert.Equal(t, actualMatch, expectedMatch)
+	assert.Equal(t, expectedMatch, actualMatch)
 }
 
 func Test_MatchN(t *testing.T) {
@@ -36,7 +36,7 @@ func Test_MatchRegexp(t *testing.T) {
 	actualMatch := MatchRegexp(r)(str)
 	expectedMatch := Match{Template: "I %s, you all %s, we all %s for ice %s.", Patterns: []string{"scream", "scream", "scream", "cream"}}
 
-	assert.Equal(t, actualMatch, expectedMatch)
+	assert.Equal(t, expectedMatch, actualMatch)
 }
 
 func Test_MatchSurrounded(t *testing.T) {
@@ -49,7 +49,7 @@ func Test_MatchSurrounded(t *testing.T) {
 		Patterns: []string{"-debug-", "-(and it's okay)-", "--", "--"},
 	}
 
-	assert.Equal(t, actualMatch, expectedMatch)
+	assert.Equal(t, expectedMatch, actualMatch)
 
 	str = "abcMULTIPLE CHARACTERSdef whoa"
 
