@@ -70,6 +70,36 @@ Marker has very simple and extensible way to get your strings colorful and brill
 
 ---
 
+#### MatchSurrounded
+
+Example 1:
+
+```go
+	sentence := "I pull out things surrounded by abcWHOA COLORSdef"
+	markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
+	fmt.Println(markedSurrounded)
+```
+<img src="assests/surrounded1.png">
+
+Example 2:
+
+```go
+	sentence = "[ERROR] This is what (parens) lines look like"
+	markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
+	fmt.Println(markedSurrounded)
+```
+<img src="assests/surrounded2.png">
+
+Example 3:
+
+```go
+	sentence = "[INFO] This is what log lines look like"
+	markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
+	fmt.Println(markedSurrounded)
+```
+<img src="assests/surrounded3.png">
+---
+
 ## Builder way
 
 If you want to mark different patterns in the same string, marker builder is neater way to do this.
