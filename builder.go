@@ -21,6 +21,12 @@ func (m *MarkBuilder) Mark(matcherFunc MatcherFunc, c *color.Color) *MarkBuilder
 	return m
 }
 
+// MarkMany marks the string with a variable number of matcher functions and color
+func (m *MarkBuilder) MarkMany(c *color.Color, matcherFuncs ...MatcherFunc) *MarkBuilder {
+	m.str = MarkMany(m.str, c, matcherFuncs...)
+	return m
+}
+
 // Build returns the marked string
 func (m *MarkBuilder) Build() string {
 	return m.str
