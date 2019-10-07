@@ -1,6 +1,7 @@
 package marker
 
 import (
+	"fmt"
 	"regexp"
 	"sort"
 	"strings"
@@ -46,34 +47,55 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	}
 }
 
-// MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string
-func MatchDaysOfWeek() MatcherFunc {
+// MatchSurrounded takes in characters surrounding a given expected match and returns the match findings
+func MatchSurrounded(charOne string, charTwo string) MatcherFunc {
 	return func(str string) Match {
-		daysOfWeek := [14]string{"monday", "Monday", "tuesday", "Tuesday", "wednesday", "Wednesday", "thursday", "Thursday", "friday", "Friday", "saturday", "Saturday", "sunday", "Sunday"}
-		patternMatchIndexes := make(map[int]string)
-		for  _, day := range daysOfWeek {
-			for strings.Contains(str, day) {
-				matchIndex := strings.Index(str, day)
-				str = strings.Replace(str, day, "%s",1)
-				patternMatchIndexes[matchIndex] = day
-			}
-		}
- 	matchIndexes := make([]int, 0, len(patternMatchIndexes))
-    	for matchKey,_ := range patternMatchIndexes {
-	        matchIndexes = append(matchIndexes, matchKey)
-	}
-    	sort.Ints(matchIndexes)
-	pattern := make([]string, 0, len(patternMatchIndexes))
-	for _, index := range matchIndexes {
-		pattern = append(pattern, patternMatchIndexes[index])
-	}
-	return Match{
-		Template: str,
-		Patterns: pattern,
-	}
+		quoteCharOne := regexp.QuoteMeta(charOne)
+		quoteCharTwo := regexp.QuoteMeta(charTwo)
+		matchPattern := fmt.Sprintf("%s[^%s]*%s", quoteCharOne, quoteCharOne, quoteCharTwo)
+		r, _ := regexp.Compile(matchPattern)
+		return MatchRegexp(r)(str)
 	}
 }
 
+// MatchBracketSurrounded is a helper utility for easy matching of bracket surrounded text
+func MatchBracketSurrounded() MatcherFunc {
+	return MatchSurrounded("[", "]")
+}
+
+// MatchParensSurrounded is a helper utility for easy matching text surrounded in parentheses
+func MatchParensSurrounded() MatcherFunc {
+	return MatchSurrounded("(", ")")
+}
+
+var daysOfWeek = [14]string{"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
+// MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string
+func MatchDaysOfWeek() MatcherFunc {
+	return func(str string) Match {
+		patternMatchIndexes := make(map[int]string)
+		for _, day := range daysOfWeek {
+			for strings.Contains(str, day) {
+				matchIndex := strings.Index(str, day)
+				str = strings.Replace(str, day, "%s", 1)
+				patternMatchIndexes[matchIndex] = day
+			}
+		}
+		matchIndexes := make([]int, 0, len(patternMatchIndexes))
+		for matchKey := range patternMatchIndexes {
+			matchIndexes = append(matchIndexes, matchKey)
+		}
+		sort.Ints(matchIndexes)
+		pattern := make([]string, 0, len(patternMatchIndexes))
+		for _, index := range matchIndexes {
+			pattern = append(pattern, patternMatchIndexes[index])
+		}
+		return Match{
+			Template: str,
+			Patterns: pattern,
+		}
+	}
+}
 
 func min(a, b int) int {
 	if a < b {
