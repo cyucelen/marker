@@ -99,3 +99,16 @@ func Test_MatchParensSurrounded(t *testing.T) {
 
 	assert.Equal(t, expectedMatch, actualMatch)
 }
+
+func Test_MatchEmail(t *testing.T) {
+	str := "Lorem ipsum dolor john@doe.io sit amet, consectetur foo@bar.com adipiscing elit. Vestibulum tellus arcu."
+
+	actualMatch := MatchEmail()(str)
+
+	expectedMatch := Match{
+		Template: "Lorem ipsum dolor %s sit amet, consectetur %s adipiscing elit. Vestibulum tellus arcu.",
+		Patterns: []string{"john@doe.io", "foo@bar.com"},
+	}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+}

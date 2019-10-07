@@ -67,6 +67,15 @@ func MatchParensSurrounded() MatcherFunc {
 	return MatchSurrounded("(", ")")
 }
 
+// MatchEmail returns a MatcherFunc that matches email in give string
+func MatchEmail() MatcherFunc {
+	return func(str string) Match {
+		matchPattern := "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+		r, _ := regexp.Compile(matchPattern)
+		return MatchRegexp(r)(str)
+	}
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
