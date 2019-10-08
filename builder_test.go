@@ -21,10 +21,10 @@ func Test_Builder(t *testing.T) {
 
 	actualString := b.SetString("Skydome is a data company.").
 		Mark(MatchAll("Skydome"), blueFg).
-		Mark(MatchAll("data"), redFg).
+		MarkMany(redFg, MatchAll("data"), MatchAll("company")).
 		Build()
 
-	expectedString := fmt.Sprintf("%s is a %s company.", blue("Skydome"), red("data"))
+	expectedString := fmt.Sprintf("%s is a %s %s.", blue("Skydome"), red("data"), red("company"))
 
 	assert.Equal(t, expectedString, actualString)
 }

@@ -15,6 +15,14 @@ func Mark(str string, matcherFunc MatcherFunc, c *color.Color) string {
 	return fmt.Sprintf(match.Template, args...)
 }
 
+// MarkMany marks each set of patterns returns by a variable number of MatcherFunc with color in given string
+func MarkMany(str string, c *color.Color, matcherFuncs ...MatcherFunc) string {
+	for _, matcherFunc := range matcherFuncs {
+		str = Mark(str, matcherFunc, c)
+	}
+	return str
+}
+
 func colorizeStrings(strs []string, c *color.Color) {
 	for i := range strs {
 		strs[i] = c.Sprintf("%s", strs[i])
