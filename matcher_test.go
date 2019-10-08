@@ -99,3 +99,14 @@ func Test_MatchParensSurrounded(t *testing.T) {
 
 	assert.Equal(t, expectedMatch, actualMatch)
 }
+
+func Test_MatchDaysOfWeek(t *testing.T) {
+	str := "Today is Tuesday or tuesday not tUesday"
+	actualMatch := MatchDaysOfWeek()(str)
+	expectedMatch := Match{Template: "Today is %s or %s not tUesday", Patterns: []string{"Tuesday", "tuesday"}}
+	assert.Equal(t, actualMatch, expectedMatch)
+	str = "Today is Tuesday or tuesday not tUesday but Tuesday"
+	actualMatch = MatchDaysOfWeek()(str)
+	expectedMatch = Match{Template: "Today is %s or %s not tUesday but %s", Patterns: []string{"Tuesday", "tuesday", "Tuesday"}}
+	assert.Equal(t, actualMatch, expectedMatch)
+}
