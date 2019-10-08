@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+var (
+	daysOfWeekReg = regexp.MustCompile("(?:[Mm]on|[Ww]ednes|[Tt](?:ues|hurs)|[Ff]ri|[Ss](?:atur|un))day")
+)
+
 type MatcherFunc func(string) Match
 
 // Match contains information about found patterns by MatcherFunc
@@ -44,6 +48,12 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 			Patterns: r.FindAllString(str, -1),
 		}
 	}
+}
+
+// MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string.
+// The matched strings will either be lowercase or capitalized versions of the days.
+func MatchDaysOfWeek() MatcherFunc {
+	return MatchRegexp(daysOfWeekReg)
 }
 
 // MatchSurrounded takes in characters surrounding a given expected match and returns the match findings

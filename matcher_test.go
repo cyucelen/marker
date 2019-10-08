@@ -39,6 +39,17 @@ func Test_MatchRegexp(t *testing.T) {
 	assert.Equal(t, expectedMatch, actualMatch)
 }
 
+func Test_MatchDaysOfWeek(t *testing.T) {
+	str := "monday tuesday wednesday thursday friday saturday sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday funday"
+	weekdays := []string{"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+		"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
+	actualMatch := MatchDaysOfWeek()(str)
+	expectedMatch := Match{Template: "%s %s %s %s %s %s %s %s %s %s %s %s %s %s funday", Patterns: weekdays}
+
+	assert.Equal(t, expectedMatch, actualMatch)
+
+}
+
 func Test_MatchSurrounded(t *testing.T) {
 	str := "[ERROR] This is a -debug- message -(and it's okay)- [INFO] --test--"
 
