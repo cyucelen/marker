@@ -143,6 +143,7 @@ func MatchParensSurrounded() MatcherFunc {
 
 var daysOfWeek = [14]string{"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
 	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
+
 // MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string
 func MatchDaysOfWeek() MatcherFunc {
 	return func(str string) Match {
