@@ -2,6 +2,7 @@ package marker
 
 import (
 	"regexp"
+	"strings"
 	"testing"
 	"time"
 
@@ -221,6 +222,30 @@ func Test_MatchTimestamp(t *testing.T) {
 		}
 
 		assert.Equal(t, expectedMatch, match)
+	})
+
+	t.Run("AllLayoutsTogether", func(t *testing.T) {
+		allTimestampLayouts := []string{
+			time.ANSIC, time.UnixDate, time.RubyDate,
+			time.RFC850, time.RFC1123, time.RFC1123Z,
+			time.RFC3339, time.RFC3339Nano, time.Kitchen,
+			time.RFC822, time.RFC822Z,
+			time.Stamp, time.StampMilli, time.StampMicro, time.StampNano,
+		}
+		stringWithAllTimestampLayouts := strings.Join(allTimestampLayouts, " , ")
+
+		for i, layout := range allTimestampLayouts {
+			layoutsCopy := make([]string, len(allTimestampLayouts))
+			copy(layoutsCopy, allTimestampLayouts)
+			layoutsCopy[i] = "%s"
+			match := MatchTimestamp(layout)(stringWithAllTimestampLayouts)
+			expectedMatch := Match{
+				Template: strings.Join(layoutsCopy, " , "),
+				Patterns: []string{layout},
+			}
+
+			assert.Equal(t, expectedMatch, match)
+		}
 	})
 }
 
