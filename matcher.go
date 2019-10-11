@@ -57,6 +57,18 @@ func MatchN(pattern string, n int) MatcherFunc {
 	}
 }
 
+// MatchMultiple creates a MatcherFunc that matches all string patterns from given slice in given string
+func MatchMultiple(patternsToMatch []string) MatcherFunc {
+	return func(str string) Match {
+		patternMatchIndexes := findPatternMatchIndexes(str, patternsToMatch)
+		patterns := getPatternsInOrder(patternMatchIndexes)
+		return Match{
+			Template: replaceMultiple(str, patternsToMatch, "%s"),
+			Patterns: patterns,
+		}
+	}
+}
+
 // MatchRegexp creates a MatcherFunc that matches given regexp in given string
 func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	return func(str string) Match {
@@ -109,28 +121,45 @@ var daysOfWeek = [14]string{"monday", "tuesday", "wednesday", "thursday", "frida
 // MatchDaysOfWeek creates a MatcherFunc that matches days of the week in given string
 func MatchDaysOfWeek() MatcherFunc {
 	return func(str string) Match {
-		patternMatchIndexes := make(map[int]string)
-		for _, day := range daysOfWeek {
-			for strings.Contains(str, day) {
-				matchIndex := strings.Index(str, day)
-				str = strings.Replace(str, day, "%s", 1)
-				patternMatchIndexes[matchIndex] = day
-			}
-		}
-		matchIndexes := make([]int, 0, len(patternMatchIndexes))
-		for matchKey := range patternMatchIndexes {
-			matchIndexes = append(matchIndexes, matchKey)
-		}
-		sort.Ints(matchIndexes)
-		pattern := make([]string, 0, len(patternMatchIndexes))
-		for _, index := range matchIndexes {
-			pattern = append(pattern, patternMatchIndexes[index])
-		}
-		return Match{
-			Template: str,
-			Patterns: pattern,
+		return MatchMultiple(daysOfWeek[:])(str)
+	}
+}
+
+func findPatternMatchIndexes(str string, patternsToMatch []string) map[int]string {
+	patternMatchIndexes := make(map[int]string)
+	for _, patternToMatch := range patternsToMatch {
+		for strings.Contains(str, patternToMatch) {
+			matchIndex := strings.Index(str, patternToMatch)
+			str = strings.Replace(str, patternToMatch, "", 1)
+			patternMatchIndexes[matchIndex] = patternToMatch
 		}
 	}
+	return patternMatchIndexes
+}
+
+func getPatternsInOrder(patternMatchIndexes map[int]string) []string {
+	matchIndexes := getKeys(patternMatchIndexes)
+	sort.Ints(matchIndexes)
+	patterns := make([]string, 0, len(patternMatchIndexes))
+	for _, index := range matchIndexes {
+		patterns = append(patterns, patternMatchIndexes[index])
+	}
+	return patterns
+}
+
+func getKeys(m map[int]string) []int {
+	keys := make([]int, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func replaceMultiple(str string, patterns []string, with string) string {
+	for _, patternToMatch := range patterns {
+		str = strings.ReplaceAll(str, patternToMatch, with)
+	}
+	return str
 }
 
 func min(a, b int) int {

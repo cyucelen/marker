@@ -293,7 +293,7 @@ func Test_MatchDaysOfWeek(t *testing.T) {
 	str = "Today is Tuesday or tuesday not tUesday but Tuesday"
 	actualMatch = MatchDaysOfWeek()(str)
 	expectedMatch = Match{Template: "Today is %s or %s not tUesday but %s", Patterns: []string{"Tuesday", "tuesday", "Tuesday"}}
-	assert.Equal(t, actualMatch, expectedMatch)
+	assert.Equal(t, expectedMatch, actualMatch)
 }
 
 func Test_MatchEmail(t *testing.T) {
