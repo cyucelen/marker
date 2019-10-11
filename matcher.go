@@ -26,6 +26,7 @@ var timestampLayoutRegexps = map[string]*regexp.Regexp{
 	time.StampNano:   StampNanoRegexp,
 }
 
+// MatcherFunc returns a Match which contains information about found patterns
 type MatcherFunc func(string) Match
 
 // Match contains information about found patterns by MatcherFunc
@@ -34,7 +35,7 @@ type Match struct {
 	Patterns []string
 }
 
-// MatchAll returns a MatcherFunc that matches all patterns in given string
+// MatchAll creates a MatcherFunc that matches all patterns in given string
 func MatchAll(pattern string) MatcherFunc {
 	return func(str string) Match {
 		count := strings.Count(str, pattern)
@@ -45,7 +46,7 @@ func MatchAll(pattern string) MatcherFunc {
 	}
 }
 
-// MatchN returns a MatcherFunc that matches first n patterns in given string
+// MatchN creates a MatcherFunc that matches first n patterns in given string
 func MatchN(pattern string, n int) MatcherFunc {
 	return func(str string) Match {
 		count := min(n, strings.Count(str, pattern))
@@ -56,7 +57,7 @@ func MatchN(pattern string, n int) MatcherFunc {
 	}
 }
 
-// MatchRegexp returns a MatcherFunc that matches regexp in given string
+// MatchRegexp creates a MatcherFunc that matches given regexp in given string
 func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	return func(str string) Match {
 		return Match{
@@ -66,7 +67,7 @@ func MatchRegexp(r *regexp.Regexp) MatcherFunc {
 	}
 }
 
-// MatchTimestamp returns a MatcherFunc that matches a time layout pattern in given string
+// MatchTimestamp creates a MatcherFunc that matches given time layout pattern in given string
 func MatchTimestamp(layout string) MatcherFunc {
 	return func(str string) Match {
 		r := timestampLayoutRegexps[layout]
@@ -74,12 +75,12 @@ func MatchTimestamp(layout string) MatcherFunc {
 	}
 }
 
-// MatchSurrounded takes in characters surrounding a given expected match and returns the match findings
-func MatchSurrounded(charOne string, charTwo string) MatcherFunc {
+// MatchSurrounded creates a MatcherFunc that matches the patterns surrounded by given opening and closure strings
+func MatchSurrounded(opening string, closure string) MatcherFunc {
 	return func(str string) Match {
-		quoteCharOne := regexp.QuoteMeta(charOne)
-		quoteCharTwo := regexp.QuoteMeta(charTwo)
-		matchPattern := fmt.Sprintf("%s[^%s]*%s", quoteCharOne, quoteCharOne, quoteCharTwo)
+		metaEscapedOpening := regexp.QuoteMeta(opening)
+		metaEscapedClosure := regexp.QuoteMeta(closure)
+		matchPattern := fmt.Sprintf("%s[^%s]*%s", metaEscapedOpening, metaEscapedOpening, metaEscapedClosure)
 		r, _ := regexp.Compile(matchPattern)
 		return MatchRegexp(r)(str)
 	}
@@ -95,20 +96,17 @@ func MatchParensSurrounded() MatcherFunc {
 	return MatchSurrounded("(", ")")
 }
 
-// emailReg Regular expression - RFC 5322
-var emailReg = regexp.MustCompile(`[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])`)
-
-// MatchEmail is a helper utility for easy matching emails in given string
+// MatchEmail creates a MatcherFunc that matches emails which meets the conditions of RFC5322 standard
 func MatchEmail() MatcherFunc {
 	return func(str string) Match {
-		return MatchRegexp(emailReg)(str)
+		return MatchRegexp(EmailRegexp)(str)
 	}
 }
 
 var daysOfWeek = [14]string{"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
 	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
 
-// MatchDaysOfWeek returns a MatcherFunc that matches days of the week in given string
+// MatchDaysOfWeek creates a MatcherFunc that matches days of the week in given string
 func MatchDaysOfWeek() MatcherFunc {
 	return func(str string) Match {
 		patternMatchIndexes := make(map[int]string)
