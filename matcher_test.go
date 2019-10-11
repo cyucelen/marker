@@ -295,3 +295,21 @@ func Test_MatchDaysOfWeek(t *testing.T) {
 	expectedMatch = Match{Template: "Today is %s or %s not tUesday but %s", Patterns: []string{"Tuesday", "tuesday", "Tuesday"}}
 	assert.Equal(t, actualMatch, expectedMatch)
 }
+
+func Test_MatchEmail(t *testing.T) {
+	str := "I am <foo@bar.com> and testing to send to dev@test"
+	actualMatch := MatchEmail()(str)
+	expectedMatch := Match{
+		Template: "I am <%s> and testing to send to dev@test",
+		Patterns: []string{"foo@bar.com"},
+	}
+	assert.Equal(t, expectedMatch, actualMatch)
+
+	str = "I am <foo@bar.com> and testing to send to john@doe.io"
+	actualMatch = MatchEmail()(str)
+	expectedMatch = Match{
+		Template: "I am <%s> and testing to send to %s",
+		Patterns: []string{"foo@bar.com", "john@doe.io"},
+	}
+	assert.Equal(t, expectedMatch, actualMatch)
+}

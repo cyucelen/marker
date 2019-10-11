@@ -95,6 +95,16 @@ func MatchParensSurrounded() MatcherFunc {
 	return MatchSurrounded("(", ")")
 }
 
+// emailReg Regular expression - RFC 5322
+var emailReg = regexp.MustCompile(`[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])`)
+
+// MatchEmail is a helper utility for easy matching emails in given string
+func MatchEmail() MatcherFunc {
+	return func(str string) Match {
+		return MatchRegexp(emailReg)(str)
+	}
+}
+
 var daysOfWeek = [14]string{"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
 	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
 
