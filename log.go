@@ -40,6 +40,9 @@ func (l *LogMarker) AddRule(rule LogMarkerRule) *LogMarker {
 }
 
 func (l *LogMarker) Print(v ...interface{}) {
-	marked := Mark(fmt.Sprint(v...), l.rules[0].Matcher, l.rules[0].Color)
+	marked := fmt.Sprint(v...)
+	for _, rule := range l.rules {
+		marked = Mark(marked, rule.Matcher, rule.Color)
+	}
 	l.logger.Print(marked)
 }

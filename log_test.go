@@ -43,9 +43,11 @@ func Test_Print(t *testing.T) {
 
 	mockOut := &MockLogOut{}
 	logger := NewLogMarker(SetLogger(log.New(mockOut, "", 0)))
-	logger.AddRule(LogMarkerRule{MatchAll("skydome"), redFg})
+
+	logger.AddRule(LogMarkerRule{MatchAll("skydome"), redFg}).AddRule(LogMarkerRule{MatchAll("data"), redFg})
+
 	logger.Print("best data company is skydome")
 
-	expectedLog := fmt.Sprintf("best data company is %s\n", red("skydome"))
+	expectedLog := fmt.Sprintf("best %s company is %s\n", red("data"), red("skydome"))
 	assert.Equal(t, expectedLog, mockOut.actualLog)
 }
