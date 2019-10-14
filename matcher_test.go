@@ -313,3 +313,19 @@ func Test_MatchEmail(t *testing.T) {
 	}
 	assert.Equal(t, expectedMatch, actualMatch)
 }
+
+func Test_MatchPalindrome(t *testing.T) {
+	str := "My eye is the palindrome and 1eye1 is as well but my 1eye1, isn't"
+	actualMatch := MatchPalindrome()(str)
+	expectedMatch := Match{
+		Template: "My %s is the palindrome and %s is as well but my 1eye1, isn't",
+		Patterns: []string{"eye", "1eye1"},
+	}
+	assert.Equal(t, expectedMatch, actualMatch)
+	str = "My eye EYE and eYe are palindromes but why is eye, not?"
+	actualMatch = MatchPalindrome()(str)
+	expectedMatch = Match{
+		Template: "My %s %s %s are palindromes but why is eye, not?",
+		Patterns: []string{"eye", "EYE", "eYe"},
+	}
+}

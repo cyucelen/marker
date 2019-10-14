@@ -57,6 +57,32 @@ func MatchN(pattern string, n int) MatcherFunc {
 	}
 }
 
+//MatchPalindrome creates a MatcherFunc that matches patterns that are palindrome
+func MatchPalindrome() MatcherFunc {
+	return func(str string) Match {
+		var isPalindrome bool
+		listOfWords := strings.Split(str, " ")
+		patternMatches := make([]string, 0, len(str))
+		for _, word := range listOfWords {
+			isPalindrome = true
+			for i := 0; i < len(word)/2; i++ {
+				if word[i] != word[len(word)-i-1] {
+					isPalindrome = false
+					break
+				}
+			}
+			if isPalindrome == true {
+				str = strings.Replace(str, word, "%s", 1)
+				patternMatches = append(patternMatches, word)
+			}
+		}
+		return Match{
+			Template: str,
+			Patterns: patternMatches,
+		}
+	}
+}
+
 // MatchMultiple creates a MatcherFunc that matches all string patterns from given slice in given string
 func MatchMultiple(patternsToMatch []string) MatcherFunc {
 	return func(str string) Match {
