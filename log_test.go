@@ -20,18 +20,18 @@ func (m *MockLogOut) Write(p []byte) (n int, err error) {
 }
 
 func Test_New(t *testing.T) {
-	logMarker := NewLogMarker()
+	logMarker := NewLogger()
 	assert.NotNil(t, logMarker.logger)
 
 	expectedLogger := log.New(os.Stdout, "test", 0)
-	logMarkerWithLogger := NewLogMarker(SetLogger(expectedLogger))
+	logMarkerWithLogger := NewLogger(SetLogger(expectedLogger))
 	assert.Equal(t, expectedLogger, logMarkerWithLogger.logger)
 }
 
 func Test_AddRule(t *testing.T) {
-	logMarker := NewLogMarker()
-	logMarkerRule1 := LogMarkerRule{MatchAll("test"), color.New(color.FgRed)}
-	logMarkerRule2 := LogMarkerRule{MatchAll("want"), color.New(color.FgBlue)}
+	logMarker := NewLogger()
+	logMarkerRule1 := MarkRule{MatchAll("test"), color.New(color.FgRed)}
+	logMarkerRule2 := MarkRule{MatchAll("want"), color.New(color.FgBlue)}
 	logMarker.AddRule(logMarkerRule1).AddRule(logMarkerRule2)
 	assert.Len(t, logMarker.rules, 2)
 }
@@ -42,9 +42,9 @@ func Test_Print(t *testing.T) {
 	red := redFg.SprintFunc()
 
 	mockOut := &MockLogOut{}
-	logger := NewLogMarker(SetLogger(log.New(mockOut, "", 0)))
+	logger := NewLogger(SetLogger(log.New(mockOut, "", 0)))
 
-	logger.AddRule(LogMarkerRule{MatchAll("skydome"), redFg}).AddRule(LogMarkerRule{MatchAll("data"), redFg})
+	logger.AddRule(MarkRule{MatchAll("skydome"), redFg}).AddRule(MarkRule{MatchAll("data"), redFg})
 
 	logger.Print("best data company is skydome")
 
