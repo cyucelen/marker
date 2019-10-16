@@ -29,11 +29,28 @@ func Test_New(t *testing.T) {
 }
 
 func Test_AddRule(t *testing.T) {
-	logMarker := NewLogger()
-	logMarkerRule1 := MarkRule{MatchAll("test"), color.New(color.FgRed)}
-	logMarkerRule2 := MarkRule{MatchAll("want"), color.New(color.FgBlue)}
-	logMarker.AddRule(logMarkerRule1).AddRule(logMarkerRule2)
-	assert.Len(t, logMarker.rules, 2)
+	logger := NewLogger()
+	markRule := MarkRule{MatchAll("test"), color.New(color.FgRed)}
+	logger.AddRule(markRule)
+	assert.Len(t, logger.rules, 1)
+
+	markRule = MarkRule{MatchAll("want"), color.New(color.FgBlue)}
+	logger.AddRule(markRule)
+	assert.Len(t, logger.rules, 2)
+}
+
+func Test_AddRules(t *testing.T) {
+	logger := NewLogger()
+	markRules := []MarkRule{
+		{MatchBracketSurrounded(), color.New(color.FgGreen)},
+		{MatchParensSurrounded(), color.New(color.BgBlack)},
+		{MatchEmail(), color.New(color.FgCyan)},
+	}
+	logger.AddRules(markRules)
+	assert.Len(t, logger.rules, 3)
+
+	logger.AddRules(markRules[:2])
+	assert.Len(t, logger.rules, 5)
 }
 
 func Test_Print(t *testing.T) {

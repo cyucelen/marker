@@ -39,6 +39,10 @@ func (l *Logger) AddRule(rule MarkRule) *Logger {
 	return l
 }
 
+func (l *Logger) AddRules(rules []MarkRule) {
+	l.rules = append(l.rules, rules...)
+}
+
 func (l *Logger) Print(v ...interface{}) {
 	marked := fmt.Sprint(v...)
 	for _, rule := range l.rules {
