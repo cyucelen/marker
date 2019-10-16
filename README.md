@@ -79,7 +79,7 @@ Example 1:
 	markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
 	fmt.Println(markedSurrounded)
 ```
-<img src="assests/surrounded1.png">
+<img src="assets/surrounded1.png">
 
 Example 2:
 
@@ -88,7 +88,7 @@ Example 2:
 	markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
 	fmt.Println(markedSurrounded)
 ```
-<img src="assests/surrounded2.png">
+<img src="assets/surrounded2.png">
 
 Example 3:
 
@@ -97,7 +97,7 @@ Example 3:
 	markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
 	fmt.Println(markedSurrounded)
 ```
-<img src="assests/surrounded3.png">
+<img src="assets/surrounded3.png">
 ---
 
 ## Builder way
