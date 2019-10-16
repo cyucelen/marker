@@ -9,6 +9,6 @@ import (
 
 func main() {
 	boringLog := "[INFO] Nobody wants to read pale [INFO] tags."
-	brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlack))
+	brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlue))
 	fmt.Println(brilliantLog)
 }

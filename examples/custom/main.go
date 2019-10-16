@@ -21,6 +21,6 @@ func MatchFirst(pattern string) marker.MatcherFunc {
 
 func main() {
 	boringLog := "[INFO] Nobody wants to read pale [INFO] tags."
-	brilliantLog := marker.Mark(boringLog, MatchFirst("[INFO]"), color.New(color.FgBlack))
+	brilliantLog := marker.Mark(boringLog, MatchFirst("[INFO]"), color.New(color.FgBlue))
 	fmt.Println(brilliantLog)
 }
