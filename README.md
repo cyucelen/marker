@@ -26,7 +26,7 @@
 # marker
 
 <p align="center">
-  <img src="assets/showoff.jpg">
+  <img src="assets/png/showoff.png">
 </p>
 
 Marker is built for easily match and mark strings for colorful terminal outputs. You can match your strings with built-in matchers or easily implement a custom matcher for your usecase. Marker uses [fatih/color](https://github.com/fatih/color) 
@@ -48,7 +48,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
   emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
   fmt.Println(emphasized)
 ```
-<img src="assets/matchall.jpg">
+<img src="assets/png/matchall.png">
 
 #### MatchN
 ```go
@@ -56,7 +56,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
   brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlue))
   fmt.Println(brilliantLog)
 ```
-<img src="assets/matchn.jpg">
+<img src="assets/png/matchn.png">
 
 #### MatchRegexp
 
@@ -66,7 +66,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
   careAboutCream := marker.Mark(rhyme, marker.MatchRegexp(r), color.New(color.FgYellow))
   fmt.Println(careAboutCream)
 ```
-<img src="assets/matchregexp.jpg">
+<img src="assets/png/matchregex.png">
 
 ---
 
@@ -79,25 +79,25 @@ Example 1:
 	markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
 	fmt.Println(markedSurrounded)
 ```
-<img src="assets/surrounded1.png">
+<img src="assets/png/matchsurrounded1.png">
 
 Example 2:
-
-```go
-	sentence = "[ERROR] This is what (parens) lines look like"
-	markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
-	fmt.Println(markedSurrounded)
-```
-<img src="assets/surrounded2.png">
-
-Example 3:
 
 ```go
 	sentence = "[INFO] This is what log lines look like"
 	markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
 	fmt.Println(markedSurrounded)
 ```
-<img src="assets/surrounded3.png">
+<img src="assets/png/matchsurrounded2.png">
+
+Example 3:
+
+```go
+	sentence = "[ERROR] This is what (parens) lines look like"
+	markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
+	fmt.Println(markedSurrounded)
+```
+<img src="assets/png/matchsurrounded3.png">
 ---
 
 ## Builder way
@@ -117,7 +117,7 @@ If you want to mark different patterns in the same string, marker builder is nea
 
   fmt.Println(markedWithBuilder)
 ```
-<img src="assets/builder.jpg">
+<img src="assets/png/builder.png">
 
 ---
 
