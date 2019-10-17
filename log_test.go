@@ -21,8 +21,11 @@ func (m *MockLogOut) Write(p []byte) (n int, err error) {
 
 func Test_New(t *testing.T) {
 	stdoutMarker := NewStdoutMarker()
-	assert.NotNil(t, stdoutMarker.out)
 	assert.Equal(t, stdoutMarker.out, os.Stdout)
+
+	mockLogOut := &MockLogOut{}
+	stdoutMarker = NewStdoutMarker(SetOutput(mockLogOut))
+	assert.Equal(t, stdoutMarker.out, mockLogOut)
 }
 
 func Test_AddRule(t *testing.T) {
