@@ -26,7 +26,7 @@
 # marker
 
 <p align="center">
-  <img src="assets/showoff.jpg">
+  <img src="assets/svg/showoff.svg">
 </p>
 
 Marker is built for easily match and mark strings for colorful terminal outputs. You can match your strings with built-in matchers or easily implement a custom matcher for your usecase. Marker uses [fatih/color](https://github.com/fatih/color) 
@@ -48,7 +48,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
   emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
   fmt.Println(emphasized)
 ```
-<img src="assets/matchall.jpg">
+<img src="assets/svg/matchall.svg">
 
 #### MatchN
 ```go
