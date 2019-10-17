@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg baseProfile="full" id="terminal" version="1.1" viewBox="0 0 960 87" width="960" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+<termtosvg:screen_geometry columns="120" rows="5"/>
+<termtosvg:animation type="css"/>
+</termtosvg:template_settings>
+<style id="generated-style" type="text/css">#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    
+            :root {
+                --animation-duration: 1000ms;
+            }
+
+            @keyframes roll {
+                0.000%{transform:translateY(0px)}
+100.000%{transform:translateY(0px)}
+            }
+
+            #screen_view {
+                animation-duration: 1000ms;
+                animation-iteration-count:infinite;
+                animation-name:roll;
+                animation-timing-function: steps(1,end);
+                animation-fill-mode: forwards;
+            }
+        </style>
+<style id="user-style" type="text/css">
+            /* gjm8 color theme (source: https://terminal.sexy/) */
+            .foreground {fill: #c5c5c5;}
+            .background {fill: #1c1c1c;}
+            .color0 {fill: #1c1c1c;}
+            .color1 {fill: #ff005b;}
+            .color2 {fill: #cee318;}
+            .color3 {fill: #ffe755;}
+            .color4 {fill: #048ac7;}
+            .color5 {fill: #833c9f;}
+            .color6 {fill: #0ac1cd;}
+            .color7 {fill: #e5e5e5;}
+            .color8 {fill: #1c1c1c;}
+            .color9 {fill: #ff005b;}
+            .color10 {fill: #cee318;}
+            .color11 {fill: #ffe755;}
+            .color12 {fill: #048ac7;}
+            .color13 {fill: #833c9f;}
+            .color14 {fill: #0ac1cd;}
+            .color15 {fill: #e5e5e5;}
+        </style>
+</defs>
+<svg height="68" id="screen" preserveAspectRatio="xMidYMin slice" viewBox="0 0 960 85" width="960">
+<rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text class="foreground" textLength="80" x="0">Mark All "</text><text class="color5" textLength="24" x="80">all</text><text class="foreground" textLength="16" x="104">":</text><text class="foreground" textLength="112" x="448">I scream, you </text><text class="color5" textLength="24" x="560">all</text><text class="foreground" textLength="96" x="584"> scream, we </text><text class="color5" textLength="24" x="680">all</text><text class="foreground" textLength="176" x="704"> scream for ice cream.</text></g><g id="g2"><text class="foreground" textLength="80" x="0">Mark All "</text><text class="color2" textLength="24" x="80">all</text><text class="foreground" textLength="56" x="104">" and "</text><text class="color13" font-weight="bold" textLength="24" x="160">ice</text><text class="foreground" textLength="16" x="184">":</text><text class="foreground" textLength="112" x="448">I scream, you </text><text class="color2" textLength="24" x="560">all</text><text class="foreground" textLength="96" x="584"> scream, we </text><text class="color2" textLength="24" x="680">all</text><text class="foreground" textLength="96" x="704"> scream for </text><text class="color13" font-weight="bold" textLength="24" x="800">ice</text><text class="foreground" textLength="56" x="824"> cream.</text></g><g id="g3"><text class="foreground" textLength="104" x="0">Mark Regexp "</text><text class="color15" font-weight="bold" textLength="104" x="104">([a-z]?cream)</text><text class="foreground" textLength="16" x="208">":</text><text class="foreground" textLength="16" x="448">I </text><text class="color15" font-weight="bold" textLength="48" x="464">scream</text><text class="foreground" textLength="80" x="512">, you all </text><text class="color15" font-weight="bold" textLength="48" x="592">scream</text><text class="foreground" textLength="72" x="640">, we all </text><text class="color15" font-weight="bold" textLength="48" x="712">scream</text><text class="foreground" textLength="72" x="760"> for ice </text><text class="color15" font-weight="bold" textLength="40" x="832">cream</text><text class="foreground" textLength="8" x="872">.</text></g><g id="g4"><text class="foreground" textLength="48" x="0">Mark "</text><text class="color1" textLength="56" x="48">for ice</text><text class="foreground" textLength="32" x="104">", "</text><text class="color5" textLength="24" x="136">all</text><text class="foreground" textLength="32" x="160">", "</text><text class="color9" font-weight="bold" textLength="104" x="192">([a-z]?cream)</text><text class="foreground" textLength="120" x="296">" (w/ builder):</text><text class="foreground" textLength="16" x="448">I </text><text class="color9" font-weight="bold" textLength="48" x="464">scream</text><text class="foreground" textLength="48" x="512">, you </text><text class="color5" textLength="24" x="560">all</text><text class="foreground" textLength="8" x="584"> </text><text class="color9" font-weight="bold" textLength="48" x="592">scream</text><text class="foreground" textLength="40" x="640">, we </text><text class="color5" textLength="24" x="680">all</text><text class="foreground" textLength="8" x="704"> </text><text class="color9" font-weight="bold" textLength="48" x="712">scream</text><text class="foreground" textLength="8" x="760"> </text><text class="color1" textLength="56" x="768">for ice</text><text class="foreground" textLength="8" x="824"> </text><text class="color9" font-weight="bold" textLength="40" x="832">cream</text><text class="foreground" textLength="8" x="872">.</text></g><g id="g5"><text class="background" textLength="8" x="0"> </text></g></defs><g id="screen_view"><g><use xlink:href="#g1" y="0"/><rect class="color7" height="17" width="24" x="160" y="17"/><rect class="color7" height="17" width="24" x="800" y="17"/><use xlink:href="#g2" y="17"/><rect class="color4" height="17" width="104" x="104" y="34"/><rect class="color4" height="17" width="48" x="464" y="34"/><rect class="color4" height="17" width="48" x="592" y="34"/><rect class="color4" height="17" width="48" x="712" y="34"/><rect class="color4" height="17" width="40" x="832" y="34"/><use xlink:href="#g3" y="34"/><rect class="color7" height="17" width="104" x="192" y="51"/><rect class="color7" height="17" width="48" x="464" y="51"/><rect class="color7" height="17" width="48" x="592" y="51"/><rect class="color7" height="17" width="48" x="712" y="51"/><rect class="color7" height="17" width="40" x="832" y="51"/><use xlink:href="#g4" y="51"/><rect class="foreground" height="17" width="8" x="0" y="68"/><use xlink:href="#g5" y="68"/></g></g></svg>
+</svg>

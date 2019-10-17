@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg baseProfile="full" id="terminal" version="1.1" viewBox="0 0 960 36" width="960" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+<termtosvg:screen_geometry columns="120" rows="2"/>
+<termtosvg:animation type="css"/>
+</termtosvg:template_settings>
+<style id="generated-style" type="text/css">#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    
+            :root {
+                --animation-duration: 1000ms;
+            }
+
+            @keyframes roll {
+                0.000%{transform:translateY(0px)}
+100.000%{transform:translateY(0px)}
+            }
+
+            #screen_view {
+                animation-duration: 1000ms;
+                animation-iteration-count:infinite;
+                animation-name:roll;
+                animation-timing-function: steps(1,end);
+                animation-fill-mode: forwards;
+            }
+        </style>
+<style id="user-style" type="text/css">
+            /* gjm8 color theme (source: https://terminal.sexy/) */
+            .foreground {fill: #c5c5c5;}
+            .background {fill: #1c1c1c;}
+            .color0 {fill: #1c1c1c;}
+            .color1 {fill: #ff005b;}
+            .color2 {fill: #cee318;}
+            .color3 {fill: #ffe755;}
+            .color4 {fill: #048ac7;}
+            .color5 {fill: #833c9f;}
+            .color6 {fill: #0ac1cd;}
+            .color7 {fill: #e5e5e5;}
+            .color8 {fill: #1c1c1c;}
+            .color9 {fill: #ff005b;}
+            .color10 {fill: #cee318;}
+            .color11 {fill: #ffe755;}
+            .color12 {fill: #048ac7;}
+            .color13 {fill: #833c9f;}
+            .color14 {fill: #0ac1cd;}
+            .color15 {fill: #e5e5e5;}
+        </style>
+</defs>
+<svg height="17" id="screen" preserveAspectRatio="xMidYMin slice" viewBox="0 0 960 34" width="960">
+<rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text class="foreground" textLength="256" x="0">I pull out things surrounded by </text><text class="color5" textLength="136" x="256">abcWHOA COLORSdef</text></g><g id="g2"><text class="background" textLength="8" x="0"> </text></g></defs><g id="screen_view"><g><use xlink:href="#g1" y="0"/><rect class="foreground" height="17" width="8" x="0" y="17"/><use xlink:href="#g2" y="17"/></g></g></svg>
+</svg>
