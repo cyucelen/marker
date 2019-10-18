@@ -32,25 +32,30 @@ func Test_AddRule(t *testing.T) {
 	stdoutMarker := NewStdoutMarker()
 	markRule := MarkRule{MatchAll("test"), color.New(color.FgRed)}
 	stdoutMarker.AddRule(markRule)
-	assert.Len(t, stdoutMarker.rules, 1)
+	assertMarkRuleEqual(t, stdoutMarker.rules[0], markRule)
 
 	markRule = MarkRule{MatchAll("want"), color.New(color.FgBlue)}
 	stdoutMarker.AddRule(markRule)
-	assert.Len(t, stdoutMarker.rules, 2)
+	assertMarkRuleEqual(t, stdoutMarker.rules[1], markRule)
 }
 
 func Test_AddRules(t *testing.T) {
 	stdoutMarker := NewStdoutMarker()
-	markRules := []MarkRule{
+	expectedRules := []MarkRule{
 		{MatchBracketSurrounded(), color.New(color.FgGreen)},
 		{MatchParensSurrounded(), color.New(color.BgBlack)},
 		{MatchEmail(), color.New(color.FgCyan)},
 	}
-	stdoutMarker.AddRules(markRules)
-	assert.Len(t, stdoutMarker.rules, 3)
+	stdoutMarker.AddRules(expectedRules)
+	assertMarkRuleSliceEqual(t, expectedRules, stdoutMarker.rules)
 
-	stdoutMarker.AddRules(markRules[:2])
-	assert.Len(t, stdoutMarker.rules, 5)
+	newRules := []MarkRule{
+		{MatchDaysOfWeek(), color.New(color.FgHiBlue)},
+		{MatchSurrounded("[", ")"), color.New(color.FgHiRed)},
+	}
+	stdoutMarker.AddRules(newRules)
+	expectedRules = append(expectedRules, newRules...)
+	assertMarkRuleSliceEqual(t, expectedRules, stdoutMarker.rules)
 }
 
 func Test_Write(t *testing.T) {
