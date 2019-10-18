@@ -176,12 +176,22 @@ func Test_MatchTimestamp(t *testing.T) {
 	})
 
 	t.Run("Stamp", func(t *testing.T) {
-		str := "Current timestamp is Jan _2 15:04:05"
+		str := "Current timestamp is Jan _2 15:04:05 and Jan _2 15:04:10"
 		match := MatchTimestamp(time.Stamp)(str)
 
 		expectedMatch := Match{
-			Template: "Current timestamp is %s",
-			Patterns: []string{"Jan _2 15:04:05"},
+			Template: "Current timestamp is %sand %s",
+			Patterns: []string{"Jan _2 15:04:05 ", "Jan _2 15:04:10"},
+		}
+
+		assert.Equal(t, expectedMatch, match)
+
+		str = "Stamps Jan _2 15:04:05.999 and Jan _2 15:04:05.999999 and Jan _2 15:04:05.999999999"
+		match = MatchTimestamp(time.Stamp)(str)
+
+		expectedMatch = Match{
+			Template: "Stamps Jan _2 15:04:05.999 and Jan _2 15:04:05.999999 and Jan _2 15:04:05.999999999",
+			Patterns: nil,
 		}
 
 		assert.Equal(t, expectedMatch, match)
