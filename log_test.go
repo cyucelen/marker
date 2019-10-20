@@ -28,40 +28,13 @@ func Test_New(t *testing.T) {
 	assert.Equal(t, stdoutMarker.out, mockLogOut)
 }
 
-func Test_AddRule(t *testing.T) {
-	stdoutMarker := NewStdoutMarker()
-	markRule := MarkRule{MatchAll("test"), color.New(color.FgRed)}
-	stdoutMarker.AddRule(markRule)
-	assertMarkRuleEqual(t, stdoutMarker.rules[0], markRule)
-
-	markRule = MarkRule{MatchAll("want"), color.New(color.FgBlue)}
-	stdoutMarker.AddRule(markRule)
-	assertMarkRuleEqual(t, stdoutMarker.rules[1], markRule)
-}
-
-func Test_AddRules(t *testing.T) {
-	stdoutMarker := NewStdoutMarker()
-	expectedRules := []MarkRule{
-		{MatchBracketSurrounded(), color.New(color.FgGreen)},
-		{MatchParensSurrounded(), color.New(color.BgBlack)},
-		{MatchEmail(), color.New(color.FgCyan)},
-	}
-	stdoutMarker.AddRules(expectedRules)
-	assertMarkRuleSliceEqual(t, expectedRules, stdoutMarker.rules)
-
-	newRules := []MarkRule{
-		{MatchDaysOfWeek(), color.New(color.FgHiBlue)},
-		{MatchSurrounded("[", ")"), color.New(color.FgHiRed)},
-	}
-	stdoutMarker.AddRules(newRules)
-	expectedRules = append(expectedRules, newRules...)
-	assertMarkRuleSliceEqual(t, expectedRules, stdoutMarker.rules)
-}
-
 func Test_Write(t *testing.T) {
 	redFg := color.New(color.FgRed)
 	redFg.EnableColor()
 	red := redFg.SprintFunc()
+	blueFg := color.New(color.FgBlue)
+	blueFg.EnableColor()
+	blue := blueFg.SprintFunc()
 
 	mockOut := &MockLogOut{}
 	stdoutMarker := NewStdoutMarker(SetOutput(mockOut))
@@ -73,4 +46,16 @@ func Test_Write(t *testing.T) {
 
 	expectedLog := fmt.Sprintf("best %s company is %s\n", red("data"), red("skydome"))
 	assert.Equal(t, expectedLog, mockOut.actualLog)
+
+	// Testing the mark order here since we cannot assert function equality (https://golang.org/ref/spec#Comparison_operators)
+	newRules := []MarkRule{
+		{MatchAll("skydome"), blueFg}, // blue should override red because of order
+		{MatchAll("company"), redFg},
+	}
+	stdoutMarker.AddRules(newRules)
+
+	expectedLog = fmt.Sprintf("best %s %s is %s\n", red("data"), red("company"), red(blue("skydome")))
+	logger.Print("best data company is skydome")
+	assert.Equal(t, expectedLog, mockOut.actualLog)
+
 }
