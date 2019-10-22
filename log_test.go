@@ -24,8 +24,15 @@ func Test_New(t *testing.T) {
 	assert.Equal(t, stdoutMarker.out, os.Stdout)
 
 	mockLogOut := &MockLogOut{}
-	stdoutMarker = NewStdoutMarker(SetOutput(mockLogOut))
-	assert.Equal(t, stdoutMarker.out, mockLogOut)
+	writeMarker := NewWriteMarker(mockLogOut)
+	assert.Equal(t, writeMarker.out, mockLogOut)
+
+	// New with options
+	otherMockLogOut := &MockLogOut{}
+	writeMarkerWithOpts := NewWriteMarker(mockLogOut, func(marker *WriteMarker) {
+		marker.out = otherMockLogOut
+	})
+	assert.Equal(t, writeMarkerWithOpts.out, otherMockLogOut)
 }
 
 func Test_Write(t *testing.T) {
@@ -37,11 +44,11 @@ func Test_Write(t *testing.T) {
 	blue := blueFg.SprintFunc()
 
 	mockOut := &MockLogOut{}
-	stdoutMarker := NewStdoutMarker(SetOutput(mockOut))
+	writeMarker := NewWriteMarker(mockOut)
 
-	stdoutMarker.AddRule(MarkRule{MatchAll("skydome"), redFg}).AddRule(MarkRule{MatchAll("data"), redFg})
+	writeMarker.AddRule(MarkRule{MatchAll("skydome"), redFg}).AddRule(MarkRule{MatchAll("data"), redFg})
 
-	logger := log.New(stdoutMarker, "", 0)
+	logger := log.New(writeMarker, "", 0)
 	logger.Print("best data company is skydome")
 
 	expectedLog := fmt.Sprintf("best %s company is %s\n", red("data"), red("skydome"))
@@ -52,7 +59,7 @@ func Test_Write(t *testing.T) {
 		{MatchAll("skydome"), blueFg}, // blue should override red because of order
 		{MatchAll("company"), redFg},
 	}
-	stdoutMarker.AddRules(newRules)
+	writeMarker.AddRules(newRules)
 
 	expectedLog = fmt.Sprintf("best %s %s is %s\n", red("data"), red("company"), red(blue("skydome")))
 	logger.Print("best data company is skydome")

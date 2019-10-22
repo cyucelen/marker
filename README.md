@@ -118,6 +118,50 @@ If you want to mark different patterns in the same string, marker builder is nea
 
 ---
 
+## Log way
+
+You may want to instrument a logger such that any output coming from it is colorized in the expected manner. `marker` contains functionality which wraps `stdout` or whatever `io.Writer` you wish.
+
+```go
+stdoutMarker := marker.NewStdoutMarker()
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), color.New(color.FgBlue)},
+  {marker.MatchAll("marker"), color.New(color.FgRed)},
+}
+
+stdoutMarker.AddRules(markRules)
+logger := log.New(stdoutMarker, "", 0)
+
+logger.Println("[INFO] marker is working as expected")
+```
+
+<img src="assets/logsimple.png">
+
+### Customize io.Writer out for log interface
+
+`marker` also allows you to specify the `io.Writer` that you want to send output to. This is useful if the logger is writing to somewhere other than `stdout` like a file.
+
+```go
+f, _ := os.Create("/tmp/dat2") // file to log to
+defer f.Close()
+w := bufio.NewWriter(f)
+defer w.Flush()
+
+writeMarker := marker.NewWriteMarker(w)
+
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), color.New(color.FgBlue)},
+  {marker.MatchAll("marker"), color.New(color.FgRed)},
+}
+
+writeMarker.AddRules(markRules)
+
+logger := log.New(writeMarker, "", 0)
+logger.Println("[INFO] marker is working as expected")
+```
+
+<img src="assets/logtofile.png">
+
 ## Writing your custom Matcher
 
 As you see in above examples, **Mark** function takes an **MatcherFunc** to match the patterns in given string and colorize them. 
