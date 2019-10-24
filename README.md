@@ -68,11 +68,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
 ```
 <img src="assets/png/matchregex.png">
 
----
-
 #### MatchSurrounded
-
-Example 1:
 
 ```go
 	sentence := "I pull out things surrounded by abcWHOA COLORSdef"
@@ -81,7 +77,7 @@ Example 1:
 ```
 <img src="assets/png/matchsurrounded1.png">
 
-Example 2:
+#### MatchBracketSurrounded
 
 ```go
 	sentence = "[INFO] This is what log lines look like"
@@ -90,7 +86,7 @@ Example 2:
 ```
 <img src="assets/png/matchsurrounded2.png">
 
-Example 3:
+#### MatchParensSurrounded
 
 ```go
 	sentence = "[ERROR] This is what (parens) lines look like"
