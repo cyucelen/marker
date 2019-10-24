@@ -138,7 +138,7 @@ Lets write our own custom Matcher that matches first encounter of given pattern.
   }
 ```
 
-You can also check built-in [markers](https://github.com/cyucelen/marker/blob/master/marker.go) for inspiration.
+You can also check built-in [matchers](https://github.com/cyucelen/marker/blob/master/matcher.go) for inspiration.
 
 # Contribution
 
