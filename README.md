@@ -94,6 +94,7 @@ Marker has very simple and extensible way to get your strings colorful and brill
 	fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded3.png">
+
 ---
 
 ## Builder way
