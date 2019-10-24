@@ -3,6 +3,7 @@ package marker
 import (
 	"fmt"
 	"regexp"
+	"time"
 )
 
 const (
@@ -39,6 +40,24 @@ var (
 	StampMicroRegexp  = regexp.MustCompile(fmt.Sprintf("%s %s %s%s", monthsAbv, days, hhmmss, micro))
 	StampNanoRegexp   = regexp.MustCompile(fmt.Sprintf("%s %s %s%s", monthsAbv, days, hhmmss, nano))
 )
+
+var timestampLayoutRegexps = map[string]*regexp.Regexp{
+	time.ANSIC:       ANSICRegexp,
+	time.UnixDate:    UnixDateRegexp,
+	time.RubyDate:    RubyDateRegexp,
+	time.RFC822:      RFC822Regexp,
+	time.RFC822Z:     RFC822ZRegexp,
+	time.RFC850:      RFC850Regexp,
+	time.RFC1123:     RFC1123Regexp,
+	time.RFC1123Z:    RFC1123ZRegexp,
+	time.RFC3339:     RFC3339Regexp,
+	time.RFC3339Nano: RFC3339NanoRegexp,
+	time.Kitchen:     KitchenRegexp,
+	time.Stamp:       StampRegexp,
+	time.StampMilli:  StampMilliRegexp,
+	time.StampMicro:  StampMicroRegexp,
+	time.StampNano:   StampNanoRegexp,
+}
 
 // EmailRegexp is a Regular expression for RFC5322
 var EmailRegexp = regexp.MustCompile(`[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])`)
