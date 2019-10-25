@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+
 	"github.com/cyucelen/marker"
 	"github.com/fatih/color"
-	"regexp"
 )
 
 var magentaFg = color.New(color.FgMagenta)
@@ -30,16 +31,16 @@ func main() {
 
 	r, _ := regexp.Compile("([a-z]?cream)")
 	markedWithRegexp := marker.Mark(rhyme, marker.MatchRegexp(r), whiteFg.Add(color.BgHiBlue))
-	regexpExampleHeader := fmt.Sprintf("Mark Regexp \"%s\":\t\t\t\t", whiteFg.Add(color.BgHiBlue).Sprint("([a-z]?cream)"))
+	regexpExampleHeader := fmt.Sprintf("Mark Regexp \"%s\":\t\t\t", whiteFg.Add(color.BgHiBlue).Sprint("([a-z]?cream)"))
 	fmt.Println(regexpExampleHeader + markedWithRegexp)
 
 	b := &marker.MarkBuilder{}
 	markedWithBuilder := b.SetString(rhyme).
 		Mark(marker.MatchN("for ice", 1), redFg).
 		Mark(marker.MatchAll("all"), magentaFg).
-		Mark(marker.MatchRegexp(r), redFg.Add(color.BgHiWhite)).
+		Mark(marker.MatchRegexp(r), blueFg).
 		Build()
-	builderExampleHeader := fmt.Sprintf("Mark \"%s\", \"%s\", \"%s\" (w/ builder):\t",
-		color.New(color.FgRed).Sprint("for ice"), magentaFg.Sprint("all"), redFg.Add(color.BgHiWhite).Sprint("([a-z]?cream)"))
+	builderExampleHeader := fmt.Sprintf("Mark \"%s\", \"%s\", \"%s\" :\t",
+		color.New(color.FgRed).Sprint("for ice"), magentaFg.Sprint("all"), blueFg.Sprint("([a-z]?cream)"))
 	fmt.Println(builderExampleHeader + markedWithBuilder)
 }

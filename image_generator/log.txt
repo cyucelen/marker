@@ -1,0 +1,1 @@
+[34m[INFO][0m [31mmarker[0m is working as expected
