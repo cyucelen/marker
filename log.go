@@ -23,17 +23,14 @@ type WriteMarker struct {
 }
 
 // NewWriteMarker creates a Marker that writes out to the given io.Writer
-func NewWriteMarker(writer io.Writer, options ...WriteMarkerOption) *WriteMarker {
+func NewWriteMarker(writer io.Writer) *WriteMarker {
 	logMarker := &WriteMarker{out: writer}
-	for _, option := range options {
-		option(logMarker)
-	}
 	return logMarker
 }
 
 // NewStdoutMarker creates a WriteMarker with default out as os.Stdout
-func NewStdoutMarker(options ...WriteMarkerOption) *WriteMarker {
-	return NewWriteMarker(os.Stdout, options...)
+func NewStdoutMarker() *WriteMarker {
+	return NewWriteMarker(os.Stdout)
 }
 
 // AddRule appends a rule to WriteMarker and returns itself

@@ -26,13 +26,6 @@ func Test_New(t *testing.T) {
 	mockLogOut := &MockLogOut{}
 	writeMarker := NewWriteMarker(mockLogOut)
 	assert.Equal(t, writeMarker.out, mockLogOut)
-
-	// New with options
-	otherMockLogOut := &MockLogOut{}
-	writeMarkerWithOpts := NewWriteMarker(mockLogOut, func(marker *WriteMarker) {
-		marker.out = otherMockLogOut
-	})
-	assert.Equal(t, writeMarkerWithOpts.out, otherMockLogOut)
 }
 
 func Test_Write(t *testing.T) {
