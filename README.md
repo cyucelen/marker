@@ -44,54 +44,54 @@ Marker has very simple and extensible way to get your strings colorful and brill
 
 #### MatchAll
 ```go
-  aristotleQuote := "The more you know, the more you realize you don't know."
-  emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
-  fmt.Println(emphasized)
+aristotleQuote := "The more you know, the more you realize you don't know."
+emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
+fmt.Println(emphasized)
 ```
 <img src="assets/png/matchall.png">
 
 #### MatchN
 ```go
-  boringLog := "[INFO] Nobody wants to read pale [INFO] tags."
-  brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlue))
-  fmt.Println(brilliantLog)
+boringLog := "[INFO] Nobody wants to read pale [INFO] tags."
+brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlue))
+fmt.Println(brilliantLog)
 ```
 <img src="assets/png/matchn.png">
 
 #### MatchRegexp
 
 ```go
-  rhyme := "I scream, you all scream, we all scream for ice cream."
-  r, _ := regexp.Compile("([a-z]?cream)")
-  careAboutCream := marker.Mark(rhyme, marker.MatchRegexp(r), color.New(color.FgYellow))
-  fmt.Println(careAboutCream)
+rhyme := "I scream, you all scream, we all scream for ice cream."
+r, _ := regexp.Compile("([a-z]?cream)")
+careAboutCream := marker.Mark(rhyme, marker.MatchRegexp(r), color.New(color.FgYellow))
+fmt.Println(careAboutCream)
 ```
 <img src="assets/png/matchregex.png">
 
 #### MatchSurrounded
 
 ```go
-	sentence := "I pull out things surrounded by abcWHOA COLORSdef"
-	markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
-	fmt.Println(markedSurrounded)
+sentence := "I pull out things surrounded by abcWHOA COLORSdef"
+markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
+fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded1.png">
 
 #### MatchBracketSurrounded
 
 ```go
-	sentence = "[INFO] This is what log lines look like"
-	markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
-	fmt.Println(markedSurrounded)
+sentence = "[INFO] This is what log lines look like"
+markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
+fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded2.png">
 
 #### MatchParensSurrounded
 
 ```go
-	sentence = "[ERROR] This is what (parens) lines look like"
-	markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
-	fmt.Println(markedSurrounded)
+sentence = "[ERROR] This is what (parens) lines look like"
+markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
+fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded3.png">
 
@@ -102,21 +102,69 @@ Marker has very simple and extensible way to get your strings colorful and brill
 If you want to mark different patterns in the same string, marker builder is neater way to do this.
 
 ```go
-  rhyme := "I scream, you all scream, we all scream for ice cream."
-  b := &marker.MarkBuilder{}
-  r, _ := regexp.Compile("([a-z]?cream)")
+rhyme := "I scream, you all scream, we all scream for ice cream."
+b := &marker.MarkBuilder{}
+r, _ := regexp.Compile("([a-z]?cream)")
 
-  markedWithBuilder := b.SetString(rhyme).
-    Mark(marker.MatchN("for ice", 1), color.New(color.FgRed)).
-    Mark(marker.MatchAll("all"), color.New(color.FgMagenta)).
-    Mark(marker.MatchRegexp(r), color.New(color.FgYellow)).
-    Build()
+markedWithBuilder := b.SetString(rhyme).
+  Mark(marker.MatchN("for ice", 1), color.New(color.FgRed)).
+  Mark(marker.MatchAll("all"), color.New(color.FgMagenta)).
+  Mark(marker.MatchRegexp(r), color.New(color.FgYellow)).
+  Build()
 
-  fmt.Println(markedWithBuilder)
+fmt.Println(markedWithBuilder)
 ```
 <img src="assets/png/builder.png">
 
 ---
+
+## Log way
+
+You may want to instrument a logger such that any output coming from it is colorized in the expected manner. `marker` contains functionality which wraps `stdout` or whatever `io.Writer` you wish.
+
+```go
+stdoutMarker := marker.NewStdoutMarker()
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), color.New(color.FgBlue)},
+  {marker.MatchAll("marker"), color.New(color.FgRed)},
+}
+
+stdoutMarker.AddRules(markRules)
+logger := log.New(stdoutMarker, "", 0)
+
+logger.Println("[INFO] marker is working as expected")
+```
+
+<img src="assets/png/log.png">
+
+### Customize io.Writer out for log interface
+
+`marker` also allows you to specify the `io.Writer` that you want to send output to. This is useful if the logger is writing to somewhere other than `stdout` like a file.
+
+```go
+f, _ := os.Create("/tmp/awesome.log")
+w := bufio.NewWriter(f)
+
+writeMarker := marker.NewWriteMarker(w)
+
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), blueFg},
+  {marker.MatchAll("marker"), magentaFg},
+}
+
+writeMarker.AddRules(markRules)
+
+logger := log.New(writeMarker, "", 0)
+logger.Println("[INFO] colorful logs even in files, marker to mark them all!")
+
+w.Flush()
+f.Close()
+
+output := catFile("/tmp/awesome.log") // cat /tmp/dat2
+fmt.Print(output)
+```
+
+<img src="assets/png/logtofile.png">
 
 ## Writing your custom Matcher
 
