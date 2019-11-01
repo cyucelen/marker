@@ -41,6 +41,83 @@ for colorizing terminal output.
 
 Marker has very simple and extensible way to get your strings colorful and brilliant!
 
+### Example
+
+```go
+aristotleQuote := "The more you know, the more you realize you don't know."
+emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
+fmt.Println(emphasized)
+```
+<img src="assets/png/matchall.png">
+
+
+## Table of Contents
+
+- [Mark Your Log Stream](#mark-your-log-stream)
+- [Custom `io.Writer` out for log interface](#custom-iowriter-out-for-log-interface)
+- [Matchers](#matchers)
+  - [MatchAll](#matchall)
+  - [MatchN](#matchn)
+  - [MatchRegexp](#matchregexp)
+  - [MatchSurrounded](#matchsurrounded)
+  - [MatchBracketSurrounded](#matchbracketsurrounded)
+  - [MatchParensSurrounded](#matchparenssurrounded)
+  - [Builder way](#builder-way)
+  - [Writing your custom Matcher](#writing-your-custom-matcher)
+- [Contribution](#contribution)
+
+---
+
+## Mark Your Log Stream
+
+You may want to instrument a logger such that any output coming from it is colorized in the expected manner. `marker` contains functionality which can be easily integrated with Golang's `log` or any interface that supports `io.Writer`.
+
+```go
+stdoutMarker := marker.NewStdoutMarker()
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), color.New(color.FgBlue)},
+  {marker.MatchAll("marker"), color.New(color.FgRed)},
+}
+
+stdoutMarker.AddRules(markRules)
+logger := log.New(stdoutMarker, "", 0)
+
+logger.Println("[INFO] marker is working as expected")
+```
+
+<img src="assets/png/log.png">
+
+### Custom `io.Writer` out for log interface
+
+`marker` also allows you to specify the `io.Writer` that you want to send output to. This is useful if the logger is writing to somewhere other than `stdout` like a file.
+
+```go
+f, _ := os.Create("/tmp/awesome.log")
+w := bufio.NewWriter(f)
+
+writeMarker := marker.NewWriteMarker(w)
+
+markRules := []marker.MarkRule{
+  {marker.MatchBracketSurrounded(), blueFg},
+  {marker.MatchAll("marker"), magentaFg},
+}
+
+writeMarker.AddRules(markRules)
+
+logger := log.New(writeMarker, "", 0)
+logger.Println("[INFO] colorful logs even in files, marker to mark them all!")
+
+w.Flush()
+f.Close()
+
+output := catFile("/tmp/awesome.log") // cat /tmp/dat2
+fmt.Print(output)
+```
+
+<img src="assets/png/logtofile.png">
+
+---
+
 ## Matchers
 
 #### MatchAll
@@ -119,55 +196,7 @@ fmt.Println(markedWithBuilder)
 
 ---
 
-## Log way
-
-You may want to instrument a logger such that any output coming from it is colorized in the expected manner. `marker` contains functionality which wraps `stdout` or whatever `io.Writer` you wish.
-
-```go
-stdoutMarker := marker.NewStdoutMarker()
-markRules := []marker.MarkRule{
-  {marker.MatchBracketSurrounded(), color.New(color.FgBlue)},
-  {marker.MatchAll("marker"), color.New(color.FgRed)},
-}
-
-stdoutMarker.AddRules(markRules)
-logger := log.New(stdoutMarker, "", 0)
-
-logger.Println("[INFO] marker is working as expected")
-```
-
-<img src="assets/png/log.png">
-
-### Customize io.Writer out for log interface
-
-`marker` also allows you to specify the `io.Writer` that you want to send output to. This is useful if the logger is writing to somewhere other than `stdout` like a file.
-
-```go
-f, _ := os.Create("/tmp/awesome.log")
-w := bufio.NewWriter(f)
-
-writeMarker := marker.NewWriteMarker(w)
-
-markRules := []marker.MarkRule{
-  {marker.MatchBracketSurrounded(), blueFg},
-  {marker.MatchAll("marker"), magentaFg},
-}
-
-writeMarker.AddRules(markRules)
-
-logger := log.New(writeMarker, "", 0)
-logger.Println("[INFO] colorful logs even in files, marker to mark them all!")
-
-w.Flush()
-f.Close()
-
-output := catFile("/tmp/awesome.log") // cat /tmp/dat2
-fmt.Print(output)
-```
-
-<img src="assets/png/logtofile.png">
-
-## Writing your custom Matcher
+## Writing your custom `Matcher`
 
 As you see in above examples, **Mark** function takes an **MatcherFunc** to match the patterns in given string and colorize them. 
 A **Matcher** is a simple closure that returns a **MatcherFunc** to be called by **Mark** function to get **Match** information to put colorized versions of patterns into template.
