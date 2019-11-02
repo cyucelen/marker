@@ -182,10 +182,11 @@ All possible formats can be found [here](https://github.com/golang/go/blob/8de0b
 
 ```go
   goodOldTimes := "2006-01-02T15:04:05Z07:00 [INFO] Loading King of Fighters '97 ROM"
-	timestampMarked := marker.Mark(goodOldTimes, marker.MatchTimestamp(time.RFC3339), color.New(color.FgBlue))
-	fmt.Println(timestampMarked)
+  timestampMarked := marker.Mark(goodOldTimes, marker.MatchTimestamp(time.RFC3339), color.New(color.FgBlue))
+  fmt.Println(timestampMarked)
 ```
 <img src="assets/png/matchtimestamp.png">
+
 ---
 
 ## Builder way
