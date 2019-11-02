@@ -110,7 +110,7 @@ logger.Println("[INFO] colorful logs even in files, marker to mark them all!")
 w.Flush()
 f.Close()
 
-output := catFile("/tmp/awesome.log") // cat /tmp/dat2
+output := catFile("/tmp/awesome.log") // $ cat /tmp/awesome.log
 fmt.Print(output)
 ```
 
