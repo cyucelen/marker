@@ -150,7 +150,7 @@ fmt.Println(careAboutCream)
 
 ```go
 sentence := "I pull out things surrounded by abcWHOA COLORSdef"
-markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), magentaFg)
+markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), color.New(color.FgMagenta))
 fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded1.png">
@@ -159,7 +159,7 @@ fmt.Println(markedSurrounded)
 
 ```go
 sentence = "[INFO] This is what log lines look like"
-markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), redFg)
+markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), color.New(color.FgRed))
 fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded2.png">
@@ -168,11 +168,24 @@ fmt.Println(markedSurrounded)
 
 ```go
 sentence = "[ERROR] This is what (parens) lines look like"
-markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), blueFg)
+markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), color.New(color.FgBlue))
 fmt.Println(markedSurrounded)
 ```
 <img src="assets/png/matchsurrounded3.png">
 
+
+#### MatchTimestamp
+
+`MatchTimestamp` can be used for matching the timestamps fits the layouts in Golang's `time`.
+
+All possible formats can be found [here](https://github.com/golang/go/blob/8de0bb77ebc3408a586ad96a3c9ae9c231fd15a3/src/time/format.go#L73).
+
+```go
+  goodOldTimes := "2006-01-02T15:04:05Z07:00 [INFO] Loading King of Fighters '97 ROM"
+	timestampMarked := marker.Mark(goodOldTimes, marker.MatchTimestamp(time.RFC3339), color.New(color.FgBlue))
+	fmt.Println(timestampMarked)
+```
+<img src="assets/png/matchtimestamp.png">
 ---
 
 ## Builder way
