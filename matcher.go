@@ -108,12 +108,12 @@ func MatchDaysOfWeek() MatcherFunc {
 
 func findPatternMatchIndexes(str string, patternsToMatch []string) map[int]string {
 	patternMatchIndexes := make(map[int]string)
-	for _, patternToMatch := range patternsToMatch {
-		for strings.Contains(str, patternToMatch) {
-			matchIndex := strings.Index(str, patternToMatch)
-			str = strings.Replace(str, patternToMatch, "", 1)
-			patternMatchIndexes[matchIndex] = patternToMatch
-		}
+	pattern := strings.Join(patternsToMatch , "|")
+	patternRegex := regexp.MustCompile(pattern)
+	indices := patternRegex.FindAllStringIndex(str, -1)
+	for _, v := range(indices) {
+		start, end := v[0], v[1]
+		patternMatchIndexes[start] = str[start:end]
 	}
 	return patternMatchIndexes
 }

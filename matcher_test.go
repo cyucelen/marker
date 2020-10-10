@@ -323,3 +323,75 @@ func Test_MatchEmail(t *testing.T) {
 	}
 	assert.Equal(t, expectedMatch, actualMatch)
 }
+
+func Test_findPatternMatchIndexes(t *testing.T) {
+
+	t.Parallel()
+
+	t.Run("Single Pattern", func(t *testing.T) {
+		str := "I scream, you all scream, we all scream for ice cream."
+		patterns := []string{"scream"}
+
+		actual := findPatternMatchIndexes(str, patterns)
+		expected := map[int]string{
+			2:"scream",
+			18: "scream",
+			33: "scream",
+		}
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Multiple Patterns", func(t *testing.T) {
+		str := "I scream, you all scream, we all scream for ice cream."
+		patterns := []string{"scream", "ice", "cream"}
+
+		actual := findPatternMatchIndexes(str, patterns)
+		expected := map[int]string{
+			2:"scream",
+			18: "scream",
+			33: "scream",
+			44: "ice",
+			48: "cream",
+		}
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("No pattern occurences", func(t *testing.T) {
+		str := "I scream, you all scream, we all scream for ice cream."
+		patterns := []string{"pickle"}
+
+		actual := findPatternMatchIndexes(str, patterns)
+		expected := map[int]string{}
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Single Regexp Pattern", func(t *testing.T) {
+		str := "I scream, you all scream, we all scream for ice cream."
+		patterns := []string{"s[a-zA-Z]+"}
+
+		actual := findPatternMatchIndexes(str, patterns)
+		expected := map[int]string{
+			2:"scream",
+			18: "scream",
+			33: "scream",
+		}
+		assert.Equal(t, expected, actual)
+	})
+	
+	t.Run("Multiple Regexp Patterns", func(t *testing.T) {
+		str := "I scream, you all scream, we all scream for ice cream."
+		patterns := []string{"s[a-zA-Z]+", "(?:,|\\.)"}
+
+		actual := findPatternMatchIndexes(str, patterns)
+		expected := map[int]string{
+			2:"scream",
+			18: "scream",
+			33: "scream",
+			8: ",",
+			24: ",",
+			53: ".",
+		}
+		assert.Equal(t, expected, actual)
+	})
+
+}
