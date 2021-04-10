@@ -6,8 +6,8 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/cyucelen/marker">
-    <img src="https://travis-ci.org/cyucelen/marker.svg?branch=master" />
+  <a href="https://github.com/cyucelen/marker/actions/workflows/go.yml">
+    <img src="https://img.shields.io/github/workflow/status/cyucelen/marker/Go" />
   </a>
   <a href="https://codecov.io/gh/cyucelen/marker">
     <img src="https://codecov.io/gh/cyucelen/marker/branch/master/graph/badge.svg" />
@@ -21,7 +21,6 @@
   <a href="https://discord.gg/kaUtncA">
     <img src="https://img.shields.io/discord/638774450862555157?color=%237289da&label=discord" />
   </a>
-  
 </p>
 
 # marker
@@ -30,7 +29,7 @@
   <img src="assets/png/showoff.png">
 </p>
 
-Marker is built for easily match and mark strings for colorful terminal outputs. You can match your strings with built-in matchers or easily implement a custom matcher for your usecase. Marker uses [fatih/color](https://github.com/fatih/color) 
+Marker is built for easily match and mark strings for colorful terminal outputs. You can match your strings with built-in matchers or easily implement a custom matcher for your usecase. Marker uses [fatih/color](https://github.com/fatih/color)
 for colorizing terminal output.
 
 ## Installation
@@ -48,8 +47,8 @@ aristotleQuote := "The more you know, the more you realize you don't know."
 emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
 fmt.Println(emphasized)
 ```
-<img src="assets/png/matchall.png">
 
+<img src="assets/png/matchall.png">
 
 ## Table of Contents
 
@@ -122,19 +121,23 @@ fmt.Print(output)
 ## Matchers
 
 #### MatchAll
+
 ```go
 aristotleQuote := "The more you know, the more you realize you don't know."
 emphasized := marker.Mark(aristotleQuote, marker.MatchAll("know"), color.New(color.FgRed))
 fmt.Println(emphasized)
 ```
+
 <img src="assets/png/matchall.png">
 
 #### MatchN
+
 ```go
 boringLog := "[INFO] Nobody wants to read pale [INFO] tags."
 brilliantLog := marker.Mark(boringLog, marker.MatchN("[INFO]", 1), color.New(color.FgBlue))
 fmt.Println(brilliantLog)
 ```
+
 <img src="assets/png/matchn.png">
 
 #### MatchRegexp
@@ -145,6 +148,7 @@ r, _ := regexp.Compile("([a-z]?cream)")
 careAboutCream := marker.Mark(rhyme, marker.MatchRegexp(r), color.New(color.FgYellow))
 fmt.Println(careAboutCream)
 ```
+
 <img src="assets/png/matchregex.png">
 
 #### MatchSurrounded
@@ -154,6 +158,7 @@ sentence := "I pull out things surrounded by abcWHOA COLORSdef"
 markedSurrounded := marker.Mark(sentence, marker.MatchSurrounded("abc", "def"), color.New(color.FgMagenta))
 fmt.Println(markedSurrounded)
 ```
+
 <img src="assets/png/matchsurrounded1.png">
 
 #### MatchBracketSurrounded
@@ -163,6 +168,7 @@ sentence = "[INFO] This is what log lines look like"
 markedSurrounded = marker.Mark(sentence, marker.MatchBracketSurrounded(), color.New(color.FgRed))
 fmt.Println(markedSurrounded)
 ```
+
 <img src="assets/png/matchsurrounded2.png">
 
 #### MatchParensSurrounded
@@ -172,8 +178,8 @@ sentence = "[ERROR] This is what (parens) lines look like"
 markedSurrounded = marker.Mark(sentence, marker.MatchParensSurrounded(), color.New(color.FgBlue))
 fmt.Println(markedSurrounded)
 ```
-<img src="assets/png/matchsurrounded3.png">
 
+<img src="assets/png/matchsurrounded3.png">
 
 #### MatchTimestamp
 
@@ -186,6 +192,7 @@ All possible formats can be found [here](https://github.com/golang/go/blob/8de0b
   timestampMarked := marker.Mark(goodOldTimes, marker.MatchTimestamp(time.RFC3339), color.New(color.FgBlue))
   fmt.Println(timestampMarked)
 ```
+
 <img src="assets/png/matchtimestamp.png">
 
 ---
@@ -207,17 +214,20 @@ markedWithBuilder := b.SetString(rhyme).
 
 fmt.Println(markedWithBuilder)
 ```
+
 <img src="assets/png/builder.png">
 
 ---
 
 ## Writing your custom `Matcher`
 
-As you see in above examples, **Mark** function takes an **MatcherFunc** to match the patterns in given string and colorize them. 
+As you see in above examples, **Mark** function takes an **MatcherFunc** to match the patterns in given string and colorize them.
 A **Matcher** is a simple closure that returns a **MatcherFunc** to be called by **Mark** function to get **Match** information to put colorized versions of patterns into template.
 
 Lets write our own custom Matcher that matches first encounter of given pattern.
+
 ### Example
+
 ```go
 
   func MatchFirst(pattern string) marker.MatcherFunc {
@@ -225,7 +235,7 @@ Lets write our own custom Matcher that matches first encounter of given pattern.
       return marker.Match{
         // replace first matching pattern with %s
         Template: strings.Replace(str, pattern, "%s", 1),
-        // patterns to be colorized by Mark, in order 
+        // patterns to be colorized by Mark, in order
         Patterns: []string{pattern},
       }
     }
@@ -236,6 +246,6 @@ You can also check built-in [matchers](https://github.com/cyucelen/marker/blob/m
 
 # Contribution
 
-I would like to accept any contributions to make Marker better and feature rich. So feel free to contribute your features(i.e. more **Matcher**s!), improvements and fixes. 
+I would like to accept any contributions to make Marker better and feature rich. So feel free to contribute your features(i.e. more **Matcher**s!), improvements and fixes.
 
 ## Have fun!
